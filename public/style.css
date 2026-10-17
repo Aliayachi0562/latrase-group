@@ -272,103 +272,116 @@ tr:hover {
 .form-group input, .form-group select {
   width: 100%;
 }
-/* ========================================================= 
- تنسيقات تجاوب الشاشات الصغيرة والهواتف (Mobile Responsive)
+/* =========================================================
+   تنسيقات الشاشات الصغيرة والهواتف (Mobile Responsive)
    ========================================================= */
-
 @media (max-width: 768px) {
-  /* 1. ضبط الشريط العلوي (Header) في الهاتف */
+  /* 1. ترتيب وتعديل الشريط العلوي لعدم التداخل */
   .top-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 10px 5px !important;
+    height: auto !important;
   }
 
   .brand-full-logo {
-    justify-content: center;
-    margin-bottom: 8px;
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
   }
 
   .logo-part-icon {
-    height: 40px;
+    height: 35px !important;
   }
 
   .logo-part-name, .logo-part-brand {
-    height: auto;
-    max-width: 140px;
+    height: auto !important;
+    max-width: 120px !important;
   }
 
   .header-contact-info {
-    font-size: 11px;
-    gap: 5px;
-    justify-content: center;
-    flex-wrap: wrap;
+    font-size: 10px !important;
+    gap: 4px !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    margin-top: 5px !important;
   }
 
-  /* 2. تحويل القائمة الجانبية والمحتوى إلى عمود واحد */
+  .header-contact-info .info-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+
+  /* 2. فصل وحل تداخل القائمة الجانبية السوداء */
   .app-body {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 
   .sidebar {
     width: 100% !important;
     min-width: 100% !important;
-    padding: 10px;
-    border-left: none;
-    border-bottom: 2px solid #f25e08;
-    text-align: center;
+    padding: 10px !important;
+    border-left: none !important;
+    border-bottom: 2px solid #f25e08 !important;
+    text-align: center !important;
+    position: relative !important;
   }
 
   .sidebar-title h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+    position: relative !important;
+    top: 0 !important;
   }
 
-  /* 3. ترتيب أدوات التحكم (البحث والتصفية) بشكل رأسي مريح */
+  .sidebar-footer {
+    display: none !important; /* إخفاء النص السفلي الثانوي في الهاتف لربح المساحة */
+  }
+
+  /* 3. عناصر المحتوى والتحكم */
   .main-content {
-    padding: 10px;
+    padding: 10px !important;
   }
 
   .control-bar {
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: column !important;
+    gap: 10px !important;
   }
 
   .search-filter-box {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
   }
 
   .search-filter-box input, 
   .search-filter-box select,
   .btn-primary {
     width: 100% !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
   }
 
-  /* 4. إمكانية التمرير الأفقي للجدول في الهاتف دون تخريب الشاشة */
+  /* 4. الجدول والنافذة المنبثقة */
   .table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
   }
 
   table {
-    min-width: 600px; /* ضمان عدم انكماش الأعمدة بشكل يشوه النصوص */
-    font-size: 13px;
+    min-width: 550px !important;
+    font-size: 12px !important;
   }
 
   th, td {
-    padding: 8px 5px;
+    padding: 8px 4px !important;
   }
 
-  /* 5. ضبط النافذة المنبثقة Modal للهاتف */
   .modal-content {
     width: 92% !important;
-    padding: 15px;
-    margin: 20px auto;
+    padding: 15px !important;
+    margin: 20px auto !important;
   }
 }
