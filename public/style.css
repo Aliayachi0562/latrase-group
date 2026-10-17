@@ -1,0 +1,274 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f9fa;
+  color: #000000;
+  overflow: hidden;
+}
+
+/* 1. الشريط العلوي (Header) - ثابت بدون عناصر برتقالية زوائد */
+.top-header {
+  height: 105px;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  border-bottom: 4px solid #f25e08;
+  position: relative;
+  z-index: 100;
+}
+
+/* الشعار محاط بإطار أبيض في اليسار */
+.brand-full-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffffff;
+  padding: 0px 20px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px rgba(242, 94, 8, 0.2);
+}
+
+.logo-part-icon {
+  height: 70px;
+  width: 120px;
+  object-fit: contain;
+}
+
+.logo-text-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* زيادة حجم logo_name ليصبح بحجم متناسق وموازي لـ logo_text */
+.logo-part-name {
+  height: 60px;
+  width: 100%;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+.logo-part-brand {
+  height: 40px;
+  width: 100%;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+/* معلومات الاتصال ثابتة في مكانها */
+.header-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #ffffff;
+  font-size: 13px;
+  border-left: 2px solid #f25e08;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-item .icon {
+  color: #f25e08;
+}
+
+/* 2. جسم التطبيق */
+.app-body {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 105px);
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 25px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-inline-end: 3px solid #f25e08;
+}
+
+.sidebar-title h3 {
+  color: #f25e08;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lang-selector select {
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #f25e08;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.sidebar-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #f25e08;
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+.control-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  background: #fdfdfd;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.search-filter-box {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+input, select {
+  padding: 10px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #f25e08;
+}
+
+.btn-primary {
+  background-color: #f25e08;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-inline-end: 5px;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #eeeeee;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 15px;
+  font-size: 14px;
+}
+
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eeeeee;
+  font-size: 14px;
+}
+
+tr:hover {
+  background-color: #fdf5f0;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  width: 450px;
+  position: relative;
+  border-top: 4px solid #f25e08;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+}

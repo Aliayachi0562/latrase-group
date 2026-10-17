@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LATRASE GROUP - إدارة الأشخاص</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- الشريط العلوي الثابت مع الشعار في اليسار -->
+  <header class="top-header" dir="ltr">
+    <div class="brand-full-logo">
+      <img src="logo_icon.png" alt="LT Icon" class="logo-part-icon">
+      <div class="logo-text-stack">
+        <img src="logo_name.png" alt="AYACHI AMOR SOUFIANE" class="logo-part-name">
+        <img src="logo_text.png" alt="LATRASE GROUP" class="logo-part-brand">
+      </div>
+    </div>
+
+    <div class="header-contact-info">
+      <div class="info-item">
+        <span class="icon">📞</span>
+        <span>0658 78 98 10 - 0660 93 18 79</span>
+      </div>
+      <div class="info-item">
+        <span class="icon">✉️</span>
+        <span>latrasegroup@gmail.com</span>
+      </div>
+      <div class="info-item">
+        <span class="icon">📍</span>
+        <span>Cite Si-ELHOUASS 02 Hassi Messaoud</span>
+      </div>
+      <div class="info-item">
+        <span class="icon">🌐</span>
+        <span>www.latrasegroup.com</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- جسم التطبيق الرئيسي -->
+  <div class="app-body" id="appBody">
+    
+    <aside class="sidebar">
+      <div class="sidebar-title">
+        <h3 id="sidebarTitle">نظام إدارة البيانات</h3>
+      </div>
+
+      <div class="lang-selector">
+        <select id="langSelect" onchange="changeLanguage(this.value)">
+          <option value="ar">العربية 🇩🇿</option>
+          <option value="fr">Français 🇫🇷</option>
+          <option value="en">English 🇬🇧</option>
+        </select>
+      </div>
+
+      <div class="sidebar-footer">
+        <p>Ensemble pour un avenir meilleur</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      
+      <div class="control-bar">
+        <div class="search-filter-box">
+          <input type="text" id="searchInput" placeholder="🔍 بحث بالاسم، اللقب، أو الهاتف..." oninput="filterData()">
+          
+          <select id="filterCategory" onchange="filterData()">
+            <option value="">جميع الفئات</option>
+            <option value="زبون">زبون</option>
+            <option value="مورد">مورد</option>
+            <option value="موظف">موظف</option>
+            <option value="ألمنيوم">ألمنيوم</option>
+            <option value="كهرباء">كهرباء</option>
+            <option value="مواد بناء">مواد بناء</option>
+            <option value="ترصيص صحي">ترصيص صحي</option>
+          </select>
+
+          <select id="filterWilaya" onchange="filterData()">
+            <option value="">جميع الولايات</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" id="btnAddPerson" onclick="openModal()">➕ إضافة شخص جديد</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th id="thFirstName">الاسم</th>
+              <th id="thLastName">اللقب</th>
+              <th id="thPhone">رقم الهاتف</th>
+              <th id="thAddress">العنوان</th>
+              <th id="thCategory">الفئة</th>
+              <th id="thWilaya">الولاية</th>
+              <th id="thActions">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="personTableBody">
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- النافذة المنبثقة لإضافة وتعديل الأشخاص -->
+  <div id="personModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle">إضافة شخص جديد</h2>
+      <form id="personForm" onsubmit="savePerson(event)">
+        <input type="hidden" id="personId">
+
+        <div class="form-group">
+          <label id="lblFirstName">الاسم:</label>
+          <input type="text" id="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label id="lblLastName">اللقب:</label>
+          <input type="text" id="lastName" required>
+        </div>
+
+        <div class="form-group">
+          <label id="lblPhone">رقم الهاتف:</label>
+          <input type="tel" id="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label id="lblAddress">العنوان:</label>
+          <input type="text" id="address">
+        </div>
+
+        <div class="form-group">
+          <label id="lblCategory">الفئة / التخصص:</label>
+          <input type="text" id="category" list="categoriesList" placeholder="اكتب أو اختر الفئة..." required>
+          <datalist id="categoriesList">
+            <option value="زبون"></option>
+            <option value="مورد"></option>
+            <option value="موظف"></option>
+            <option value="ألمنيوم"></option>
+            <option value="كهرباء"></option>
+            <option value="مواد بناء"></option>
+            <option value="ترصيص صحي"></option>
+          </datalist>
+        </div>
+
+        <div class="form-group">
+          <label id="lblWilaya">الولاية:</label>
+          <select id="wilaya" required>
+            <option value="" id="optWilayaSelect">اختر الولاية...</option>
+          </select>
+        </div>
+
+        <button type="submit" id="btnSavePerson" class="btn-primary" style="width: 100%; margin-top: 15px;">حفظ البيانات</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
