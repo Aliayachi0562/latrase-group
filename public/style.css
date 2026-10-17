@@ -272,3 +272,103 @@ tr:hover {
 .form-group input, .form-group select {
   width: 100%;
 }
+/* =========================================================
+   تنسيقات تجاوب الشاشات الصغيرة والهواتف (Mobile Responsive)
+   ========================================================= */
+
+@media (max-width: 768px) {
+  /* 1. ضبط الشريط العلوي (Header) في الهاتف */
+  .top-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .brand-full-logo {
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .logo-part-icon {
+    height: 40px;
+  }
+
+  .logo-part-name, .logo-part-brand {
+    height: auto;
+    max-width: 140px;
+  }
+
+  .header-contact-info {
+    font-size: 11px;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* 2. تحويل القائمة الجانبية والمحتوى إلى عمود واحد */
+  .app-body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    padding: 10px;
+    border-left: none;
+    border-bottom: 2px solid #f25e08;
+    text-align: center;
+  }
+
+  .sidebar-title h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  /* 3. ترتيب أدوات التحكم (البحث والتصفية) بشكل رأسي مريح */
+  .main-content {
+    padding: 10px;
+  }
+
+  .control-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-filter-box {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .search-filter-box input, 
+  .search-filter-box select,
+  .btn-primary {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* 4. إمكانية التمرير الأفقي للجدول في الهاتف دون تخريب الشاشة */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+
+  table {
+    min-width: 600px; /* ضمان عدم انكماش الأعمدة بشكل يشوه النصوص */
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 8px 5px;
+  }
+
+  /* 5. ضبط النافذة المنبثقة Modal للهاتف */
+  .modal-content {
+    width: 92% !important;
+    padding: 15px;
+    margin: 20px auto;
+  }
+}
