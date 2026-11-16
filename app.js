@@ -374,31 +374,28 @@ async function deletePerson(docId) {
   }
 }
 
-function filterData() {
-  const searchVal = document.getElementById('searchInput').value.toLowerCase();
-  const catVal = document.getElementById('filterCategory').value;
-  const wilayaVal = document.getElementById('filterWilaya').value;
+function listenToCloudData() {
+  peopleCollection.onSnapshot((snapshot) => {
+    peopleData = snapshot.docs.map(doc => ({
+      docId: doc.id,
+      ...doc.data()
+    }));
 
-  const filtered = peopleData.filter(person => {
-    const matchesSearch = (person.firstName || '').toLowerCase().includes(searchVal) ||
-                          (person.lastName || '').toLowerCase().includes(searchVal) ||
-                          (person.phone || '').includes(searchVal);
+    // ترتيب السجلات حسب تاريخ الإنشاء إن وجد
+    peopleData.sort((a, b) => {
+      const dateA = a.createdAt?.toDate
+        ? a.createdAt.toDate().getTime() : 0;
 
-    let matchesCat = true;
-    if (catVal !== '') {
-      matchesCat = (person.category === catVal) ||
-                   (catVal === 'زبون' && (person.category === 'زبون' || person.category === 'Client')) ||
-                   (catVal === 'مورد' && (person.category === 'مورد' || person.category === 'Fournisseur')) ||
-                   (catVal === 'موظف' && (person.category === 'موظف' || person.category === 'Employé'));
-    }
+      const dateB = b.createdAt?.toDate
+        ? b.createdAt.toDate().getTime() : 0;
 
-    let matchesWilaya = true;
-    if (wilayaVal !== '') {
-      matchesWilaya = (person.wilaya == wilayaVal);
-    }
+      return dateB - dateA;
+    });
 
-    return matchesSearch && matchesCat && matchesWilaya;
+    filterData();
+
+  }, (error) => {
+    console.error("خطأ في جلب البيانات السحابية:", error);
+    alert("تعذر تحميل البيانات من Firebase: " + error.message);
   });
-
-  renderTable(filtered);
 }
