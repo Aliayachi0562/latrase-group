@@ -1,6 +1,22 @@
-let currentLang = 'ar';
+// إعدادات Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDiJIf6YtwwnBB78nHq8S9kkqxZlmNjVBk",
+  authDomain: "latrase-group.firebaseapp.com",
+  projectId: "latrase-group",
+  storageBucket: "latrase-group.firebasestorage.app",
+  messagingSenderId: "954906635169",
+  appId: "1:954906635169:web:adce3b89cffae3013839e0",
+  measurementId: "G-8H3Q53WSZJ"
+};
 
-// قائمة ولايات مبسطة وخالية من الأخطاء
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const peopleCollection = db.collection("people");
+
+let currentLang = 'ar';
+let peopleData = [];
+
+// الولايات الـ58
 const wilayasData = [
   { code: 1, ar: "1. أدرار", fr: "1. Adrar", en: "1. Adrar" },
   { code: 2, ar: "2. الشلف", fr: "2. Chlef", en: "2. Chlef" },
@@ -12,17 +28,54 @@ const wilayasData = [
   { code: 8, ar: "8. بشار", fr: "8. Béchar", en: "8. Béchar" },
   { code: 9, ar: "9. البليدة", fr: "9. Blida", en: "9. Blida" },
   { code: 10, ar: "10. البويرة", fr: "10. Bouira", en: "10. Bouira" },
+  { code: 11, ar: "11. تمنراست", fr: "11. Tamanrasset", en: "11. Tamanrasset" },
+  { code: 12, ar: "12. تبسة", fr: "12. Tébessa", en: "12. Tébessa" },
+  { code: 13, ar: "13. تلمسان", fr: "13. Tlemcen", en: "13. Tlemcen" },
+  { code: 14, ar: "14. تيارت", fr: "14. Tiaret", en: "14. Tiaret" },
+  { code: 15, ar: "15. تيزي وزو", fr: "15. Tizi Ouzou", en: "15. Tizi Ouzou" },
   { code: 16, ar: "16. الجزائر", fr: "16. Alger", en: "16. Algiers" },
+  { code: 17, ar: "17. الجلفة", fr: "17. Djelfa", en: "17. Djelfa" },
+  { code: 18, ar: "18. جيجل", fr: "18. Jijel", en: "18. Jijel" },
+  { code: 19, ar: "19. سطيف", fr: "19. Sétif", en: "19. Sétif" },
+  { code: 20, ar: "20. سعيدة", fr: "20. Saïda", en: "20. Saïda" },
+  { code: 21, ar: "21. سكيكدة", fr: "21. Skikda", en: "21. Skikda" },
+  { code: 22, ar: "22. سيدي بلعباس", fr: "22. Sidi Bel Abbès", en: "22. Sidi Bel Abbes" },
+  { code: 23, ar: "23. عنابة", fr: "23. Annaba", en: "23. Annaba" },
+  { code: 24, ar: "24. قالمة", fr: "24. Guelma", en: "24. Guelma" },
+  { code: 25, ar: "25. قسنطينة", fr: "25. Constantine", en: "25. Constantine" },
+  { code: 26, ar: "26. المدية", fr: "26. Médéa", en: "26. Medea" },
+  { code: 27, ar: "27. مستغانم", fr: "27. Mostaganem", en: "27. Mostaganem" },
+  { code: 28, ar: "28. المسيلة", fr: "28. M'Sila", en: "28. M'Sila" },
+  { code: 29, ar: "29. معسكر", fr: "29. Mascara", en: "29. Mascara" },
   { code: 30, ar: "30. ورقلة", fr: "30. Ouargla", en: "30. Ouargla" },
+  { code: 31, ar: "31. وهران", fr: "31. Oran", en: "31. Oran" },
+  { code: 32, ar: "32. البيض", fr: "32. El Bayadh", en: "32. El Bayadh" },
+  { code: 33, ar: "33. إليزي", fr: "33. Illizi", en: "33. Illizi" },
+  { code: 34, ar: "34. برج بوعريريج", fr: "34. Bordj Bou Arréridj", en: "34. Bordj Bou Arreridj" },
+  { code: 35, ar: "35. بومرداس", fr: "35. Boumerdès", en: "35. Boumerdes" },
   { code: 36, ar: "36. الطارف", fr: "36. El Tarf", en: "36. El Tarf" },
+  { code: 37, ar: "37. تندوف", fr: "37. Tindouf", en: "37. Tindouf" },
+  { code: 38, ar: "38. تيسمسيلت", fr: "38. Tissemsilt", en: "38. Tissemsilt" },
   { code: 39, ar: "39. الوادي", fr: "39. El Oued", en: "39. El Oued" },
-  { code: 57, ar: "57. المغير", fr: "57. El M'Ghaier", en: "57. El M'Ghaier" }
-];
-
-let peopleData = JSON.parse(localStorage.getItem('latrase_people')) || [
-  { firstName: "Ali", lastName: "Ayachi Amor", phone: "0672045531", address: "RUE CHAHIDA HAMMI MESSAUDA", category: "زبون", wilaya: "39" },
-  { firstName: "Hichm", lastName: "Ayachi Amor", phone: "0664634318", address: "RUE CHAHIDA HAMMI MESSAUDA", category: "زبون", wilaya: "39" },
-  { firstName: "Tidjani", lastName: "Ayachi Amor", phone: "0671626750", address: "RUE CHAHIDA HAMMI MESSAUDA", category: "موظف", wilaya: "39" }
+  { code: 40, ar: "40. خنشلة", fr: "40. Khenchela", en: "40. Khenchela" },
+  { code: 41, ar: "41. سوق أهراس", fr: "41. Souk Ahras", en: "41. Souk Ahras" },
+  { code: 42, ar: "42. تيبازة", fr: "42. Tipaza", en: "42. Tipaza" },
+  { code: 43, ar: "43. ميلة", fr: "43. Mila", en: "43. Mila" },
+  { code: 44, ar: "44. عين الدفلى", fr: "44. Aïn Defla", en: "44. Ain Defla" },
+  { code: 45, ar: "45. النعامة", fr: "45. Naâma", en: "45. Naama" },
+  { code: 46, ar: "46. عين تموشنت", fr: "46. Aïn Témouchent", en: "46. Ain Temouchent" },
+  { code: 47, ar: "47. غرداية", fr: "47. Ghardaïa", en: "47. Ghardaia" },
+  { code: 48, ar: "48. غليزان", fr: "48. Relizane", en: "48. Relizane" },
+  { code: 49, ar: "49. تيميمون", fr: "49. Timimoun", en: "49. Timimoun" },
+  { code: 50, ar: "50. برج باجي مختار", fr: "50. Bordj Badji Mokhtar", en: "50. Bordj Badji Mokhtar" },
+  { code: 51, ar: "51. أولاد جلال", fr: "51. Ouled Djellal", en: "51. Ouled Djellal" },
+  { code: 52, ar: "52. بني عباس", fr: "52. Béni Abbès", en: "52. Beni Abbas" },
+  { code: 53, ar: "53. إن صالح", fr: "53. In Salah", en: "53. In Salah" },
+  { code: 54, ar: "54. إن قزام", fr: "54. In Guezzam", en: "54. In Guezzam" },
+  { code: 55, ar: "55. تقرت", fr: "55. Touggourt", en: "55. Touggourt" },
+  { code: 56, ar: "56. جانت", fr: "56. Djanet", en: "56. Djanet" },
+  { code: 57, ar: "57. المغير", fr: "57. El M'Ghaier", en: "57. El M'Ghaier" },
+  { code: 58, ar: "58. المنيعة", fr: "58. El Meniaa", en: "58. El Meniaa" }
 ];
 
 const appTranslations = {
@@ -60,6 +113,7 @@ const appTranslations = {
     btnSave: "حفظ البيانات",
     noData: "لا توجد بيانات مسجلة"
   },
+
   fr: {
     sidebarTitle: "Système de Gestion",
     addBtn: "➕ Ajouter une personne",
@@ -94,6 +148,7 @@ const appTranslations = {
     btnSave: "Enregistrer",
     noData: "Aucune donnée enregistrée"
   },
+
   en: {
     sidebarTitle: "Data Management",
     addBtn: "➕ Add New Person",
@@ -130,10 +185,35 @@ const appTranslations = {
   }
 };
 
+// تشغيل التطبيق
 document.addEventListener('DOMContentLoaded', () => {
   populateWilayas();
-  renderTable(peopleData);
+  listenToCloudData();
 });
+
+// الاستماع للتحديثات الفورية من Firebase
+function listenToCloudData() {
+  peopleCollection.onSnapshot((snapshot) => {
+    peopleData = snapshot.docs.map(doc => ({
+      docId: doc.id,
+      ...doc.data()
+    }));
+
+    peopleData.sort((a, b) => {
+      const dateA = a.createdAt && a.createdAt.toDate
+        ? a.createdAt.toDate().getTime() : 0;
+      const dateB = b.createdAt && b.createdAt.toDate
+        ? b.createdAt.toDate().getTime() : 0;
+
+      return dateB - dateA;
+    });
+
+    filterData();
+  }, (error) => {
+    console.error("Firebase error:", error);
+    alert("تعذر تحميل البيانات من Firebase: " + error.message);
+  });
+}
 
 function populateWilayas() {
   const filterWilaya = document.getElementById('filterWilaya');
@@ -141,8 +221,11 @@ function populateWilayas() {
 
   if (!filterWilaya || !modalWilaya) return;
 
-  filterWilaya.innerHTML = `<option value="">${appTranslations[currentLang].allWilayas}</option>`;
-  modalWilaya.innerHTML = `<option value="">${appTranslations[currentLang].optWilayaSelect}</option>`;
+  filterWilaya.innerHTML =
+    `<option value="">${appTranslations[currentLang].allWilayas}</option>`;
+
+  modalWilaya.innerHTML =
+    `<option value="">${appTranslations[currentLang].optWilayaSelect}</option>`;
 
   wilayasData.forEach(w => {
     const text = w[currentLang] || w.ar;
@@ -161,6 +244,7 @@ function populateWilayas() {
 
 function getTranslatedCategory(catVal) {
   const t = appTranslations[currentLang];
+
   if (catVal === 'زبون' || catVal === 'Client') return t.catClient;
   if (catVal === 'مورد' || catVal === 'Fournisseur') return t.catSupplier;
   if (catVal === 'موظف' || catVal === 'Employé') return t.catEmployee;
@@ -168,96 +252,130 @@ function getTranslatedCategory(catVal) {
   if (catVal === 'كهرباء' || catVal === 'Électricité') return t.catElectricity;
   if (catVal === 'مواد بناء' || catVal === 'Matériaux de construction') return t.catBuildingMat;
   if (catVal === 'ترصيص صحي' || catVal === 'Plomberie sanitaire') return t.catPlumbing;
+
   return catVal;
 }
 
 function renderTable(data) {
   const tbody = document.getElementById('personTableBody');
   if (!tbody) return;
+
   tbody.innerHTML = '';
   const t = appTranslations[currentLang];
 
   if (data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888;">${t.noData}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#888;">${t.noData}</td></tr>`;
     return;
   }
 
-  data.forEach((person, index) => {
-    const wObj = wilayasData.find(w => w.code == person.wilaya || w.ar === person.wilaya);
+  data.forEach(person => {
+    const wObj = wilayasData.find(w =>
+      w.code == person.wilaya || w.ar === person.wilaya
+    );
+
     const wilayaText = wObj ? wObj[currentLang] : person.wilaya;
 
     const tr = document.createElement('tr');
+
     tr.innerHTML = `
-      <td>${person.firstName}</td>
-      <td>${person.lastName}</td>
-      <td>${person.phone}</td>
+      <td>${person.firstName || ''}</td>
+      <td>${person.lastName || ''}</td>
+      <td>${person.phone || ''}</td>
       <td>${person.address || '-'}</td>
-      <td><b style="color: #f25e08;">${getTranslatedCategory(person.category)}</b></td>
+      <td><b style="color:#f25e08;">${getTranslatedCategory(person.category)}</b></td>
       <td>${wilayaText || '-'}</td>
       <td>
-        <button class="btn-edit" onclick="editPerson(${index})">${t.editBtn}</button>
-        <button class="btn-delete" onclick="deletePerson(${index})">${t.deleteBtn}</button>
+        <button class="btn-edit" onclick="editPerson('${person.docId}')">${t.editBtn}</button>
+        <button class="btn-delete" onclick="deletePerson('${person.docId}')">${t.deleteBtn}</button>
       </td>
     `;
+
     tbody.appendChild(tr);
   });
 }
 
 function changeLanguage(lang) {
   currentLang = lang;
-  
+
   const appBody = document.getElementById('appBody');
   if (appBody) {
     appBody.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
   }
+
   document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
   const t = appTranslations[lang];
 
-  // 1. ترجمة عناصر القائمة والتحكم
-  if (document.getElementById('sidebarTitle')) document.getElementById('sidebarTitle').innerText = t.sidebarTitle;
-  if (document.getElementById('btnAddPerson')) document.getElementById('btnAddPerson').innerText = t.addBtn;
-  if (document.getElementById('searchInput')) document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+  if (document.getElementById('sidebarTitle'))
+    document.getElementById('sidebarTitle').innerText = t.sidebarTitle;
 
-  // 2. ترجمة خيارات قائمة التصفية حسب الفئة (Filter Category Options)
+  if (document.getElementById('btnAddPerson'))
+    document.getElementById('btnAddPerson').innerText = t.addBtn;
+
+  if (document.getElementById('searchInput'))
+    document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+
   const catFilter = document.getElementById('filterCategory');
-  if (catFilter && catFilter.options.length >= 8) {
+
+  if (catFilter && catFilter.options.length >= 5) {
     catFilter.options[0].text = t.allCategories;
-    catFilter.options[1].text = t.catClient;
-    catFilter.options[2].text = t.catSupplier;
-    catFilter.options[3].text = t.catEmployee;
-    catFilter.options[4].text = t.catAluminium;
-    catFilter.options[5].text = t.catElectricity;
-    catFilter.options[6].text = t.catBuildingMat;
-    catFilter.options[7].text = t.catPlumbing;
+    catFilter.options[1].text = t.catAluminium;
+    catFilter.options[2].text = t.catElectricity;
+    catFilter.options[3].text = t.catBuildingMat;
+    catFilter.options[4].text = t.catPlumbing;
   }
 
-  // 3. ترجمة رؤوس الجدول
-  if (document.getElementById('thFirstName')) document.getElementById('thFirstName').innerText = t.thName;
-  if (document.getElementById('thLastName')) document.getElementById('thLastName').innerText = t.thLastName;
-  if (document.getElementById('thPhone')) document.getElementById('thPhone').innerText = t.thPhone;
-  if (document.getElementById('thAddress')) document.getElementById('thAddress').innerText = t.thAddress;
-  if (document.getElementById('thCategory')) document.getElementById('thCategory').innerText = t.thCategory;
-  if (document.getElementById('thWilaya')) document.getElementById('thWilaya').innerText = t.thWilaya;
-  if (document.getElementById('thActions')) document.getElementById('thActions').innerText = t.thActions;
+  if (document.getElementById('thFirstName'))
+    document.getElementById('thFirstName').innerText = t.thName;
 
-  // 4. ترجمة النافذة المنبثقة Modal
-  if (document.getElementById('lblFirstName')) document.getElementById('lblFirstName').innerText = t.lblFirstName;
-  if (document.getElementById('lblLastName')) document.getElementById('lblLastName').innerText = t.lblLastName;
-  if (document.getElementById('lblPhone')) document.getElementById('lblPhone').innerText = t.lblPhone;
-  if (document.getElementById('lblAddress')) document.getElementById('lblAddress').innerText = t.lblAddress;
-  if (document.getElementById('lblCategory')) document.getElementById('lblCategory').innerText = t.lblCategory;
-  if (document.getElementById('lblWilaya')) document.getElementById('lblWilaya').innerText = t.lblWilaya;
-  if (document.getElementById('btnSavePerson')) document.getElementById('btnSavePerson').innerText = t.btnSave;
+  if (document.getElementById('thLastName'))
+    document.getElementById('thLastName').innerText = t.thLastName;
 
-  // إعادة تعبئة وتحديث القوائم والبيانات
+  if (document.getElementById('thPhone'))
+    document.getElementById('thPhone').innerText = t.thPhone;
+
+  if (document.getElementById('thAddress'))
+    document.getElementById('thAddress').innerText = t.thAddress;
+
+  if (document.getElementById('thCategory'))
+    document.getElementById('thCategory').innerText = t.thCategory;
+
+  if (document.getElementById('thWilaya'))
+    document.getElementById('thWilaya').innerText = t.thWilaya;
+
+  if (document.getElementById('thActions'))
+    document.getElementById('thActions').innerText = t.thActions;
+
+  if (document.getElementById('lblFirstName'))
+    document.getElementById('lblFirstName').innerText = t.lblFirstName;
+
+  if (document.getElementById('lblLastName'))
+    document.getElementById('lblLastName').innerText = t.lblLastName;
+
+  if (document.getElementById('lblPhone'))
+    document.getElementById('lblPhone').innerText = t.lblPhone;
+
+  if (document.getElementById('lblAddress'))
+    document.getElementById('lblAddress').innerText = t.lblAddress;
+
+  if (document.getElementById('lblCategory'))
+    document.getElementById('lblCategory').innerText = t.lblCategory;
+
+  if (document.getElementById('lblWilaya'))
+    document.getElementById('lblWilaya').innerText = t.lblWilaya;
+
+  if (document.getElementById('btnSavePerson'))
+    document.getElementById('btnSavePerson').innerText = t.btnSave;
+
   populateWilayas();
   filterData();
 }
 
 function openModal(isEdit = false) {
   document.getElementById('personModal').style.display = 'flex';
+
   const t = appTranslations[currentLang];
+
   if (!isEdit) {
     document.getElementById('personForm').reset();
     document.getElementById('personId').value = '';
@@ -269,73 +387,103 @@ function closeModal() {
   document.getElementById('personModal').style.display = 'none';
 }
 
-function savePerson(e) {
+// حفظ البيانات في Firebase
+async function savePerson(e) {
   e.preventDefault();
-  const id = document.getElementById('personId').value;
+
+  const docId = document.getElementById('personId').value;
+
   const person = {
     firstName: document.getElementById('firstName').value,
     lastName: document.getElementById('lastName').value,
     phone: document.getElementById('phone').value,
     address: document.getElementById('address').value,
     category: document.getElementById('category').value,
-    wilaya: document.getElementById('wilaya').value,
+    wilaya: document.getElementById('wilaya').value
   };
 
-  if (id === '') {
-    peopleData.push(person);
-  } else {
-    peopleData[id] = person;
-  }
+  try {
+    if (docId === '') {
+      person.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await peopleCollection.add(person);
+    } else {
+      await peopleCollection.doc(docId).update(person);
+    }
 
-  localStorage.setItem('latrase_people', JSON.stringify(peopleData));
-  closeModal();
-  filterData();
+    closeModal();
+
+  } catch (error) {
+    alert("حدث خطأ أثناء الحفظ السحابي: " + error.message);
+  }
 }
 
-function editPerson(index) {
-  const person = peopleData[index];
+function editPerson(docId) {
+  const person = peopleData.find(p => p.docId === docId);
+  if (!person) return;
+
   const t = appTranslations[currentLang];
-  document.getElementById('personId').value = index;
+
+  document.getElementById('personId').value = docId;
   document.getElementById('firstName').value = person.firstName;
   document.getElementById('lastName').value = person.lastName;
   document.getElementById('phone').value = person.phone;
-  document.getElementById('address').value = person.address;
+  document.getElementById('address').value = person.address || '';
   document.getElementById('category').value = person.category;
   document.getElementById('wilaya').value = person.wilaya;
 
   document.getElementById('modalTitle').innerText = t.modalTitleEdit;
+
   openModal(true);
 }
 
-function deletePerson(index) {
-  if (confirm(currentLang === 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Voulez-vous vraiment supprimer ?')) {
-    peopleData.splice(index, 1);
-    localStorage.setItem('latrase_people', JSON.stringify(peopleData));
-    filterData();
+// حذف الشخص من Firebase
+async function deletePerson(docId) {
+  const message = currentLang === 'ar'
+    ? 'هل أنت متأكد من الحذف نهائياً من جميع الأجهزة؟'
+    : 'Voulez-vous vraiment supprimer ?';
+
+  if (confirm(message)) {
+    try {
+      await peopleCollection.doc(docId).delete();
+    } catch (error) {
+      alert("خطأ أثناء الحذف: " + error.message);
+    }
   }
 }
 
+// البحث والتصفية
 function filterData() {
-  const searchVal = document.getElementById('searchInput').value.toLowerCase();
-  const catVal = document.getElementById('filterCategory').value;
-  const wilayaVal = document.getElementById('filterWilaya').value;
+  const searchEl = document.getElementById('searchInput');
+  const catEl = document.getElementById('filterCategory');
+  const wilayaEl = document.getElementById('filterWilaya');
+
+  const searchVal = searchEl ? searchEl.value.toLowerCase() : '';
+  const catVal = catEl ? catEl.value : '';
+  const wilayaVal = wilayaEl ? wilayaEl.value : '';
 
   const filtered = peopleData.filter(person => {
-    const matchesSearch = person.firstName.toLowerCase().includes(searchVal) ||
-                          person.lastName.toLowerCase().includes(searchVal) ||
-                          person.phone.includes(searchVal);
+    const matchesSearch =
+      (person.firstName || '').toLowerCase().includes(searchVal) ||
+      (person.lastName || '').toLowerCase().includes(searchVal) ||
+      (person.phone || '').includes(searchVal);
 
     let matchesCat = true;
+
     if (catVal !== '') {
-      matchesCat = (person.category === catVal) || 
-                   (catVal === 'زبون' && (person.category === 'زبون' || person.category === 'Client')) ||
-                   (catVal === 'مورد' && (person.category === 'مورد' || person.category === 'Fournisseur')) ||
-                   (catVal === 'موظف' && (person.category === 'موظف' || person.category === 'Employé'));
+      matchesCat =
+        person.category === catVal ||
+        (catVal === 'زبون' &&
+          (person.category === 'زبون' || person.category === 'Client')) ||
+        (catVal === 'مورد' &&
+          (person.category === 'مورد' || person.category === 'Fournisseur')) ||
+        (catVal === 'موظف' &&
+          (person.category === 'موظف' || person.category === 'Employé'));
     }
 
     let matchesWilaya = true;
+
     if (wilayaVal !== '') {
-      matchesWilaya = (person.wilaya == wilayaVal);
+      matchesWilaya = person.wilaya == wilayaVal;
     }
 
     return matchesSearch && matchesCat && matchesWilaya;
